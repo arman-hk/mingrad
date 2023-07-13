@@ -1,5 +1,5 @@
 # mingrad
-![](/puppy.jpg)
+![](/pom.jpg)
 
 mingrad is a lean, but mean autograd engine that extends [micrograd](https://github.com/karpathy/micrograd) into a mini deep learning framework.
 
