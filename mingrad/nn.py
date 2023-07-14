@@ -1,5 +1,5 @@
 import numpy as np
-from engine import Value
+from mingrad.engine import Value
 
 """ Linear Layer """
 
