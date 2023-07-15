@@ -28,8 +28,6 @@ class Value:
         def _grad_fn(grad):
             self_data, other_data = ctx.saved_arrays.values()
             self.grad += grad
-            print(grad)
-            print(other)
             other.grad += grad
         out = Value(self.data + other.data, (self, other), _grad_fn)
         return out
