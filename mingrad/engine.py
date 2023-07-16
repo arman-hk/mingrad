@@ -27,8 +27,8 @@ class Value:
 
         def _grad_fn(grad):
             self_data, other_data = ctx.saved_arrays.values()
-            self.grad += grad
-            other.grad += grad
+            self.grad += np.sum(grad, axis=0)
+            other.grad += np.sum(grad, axis=0)
         out = Value(self.data + other.data, (self, other), _grad_fn)
         return out
     

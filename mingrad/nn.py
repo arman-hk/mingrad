@@ -56,7 +56,7 @@ class SGD:
         for p in self.params:
             if p is not None:
                 p.data -= self.lr * p.grad
-                p.grad = None # clear grad for the next iter
+                p.grad = np.zeros_like(p.data) # clear grad to zeroes
 
 """ Container """
 
