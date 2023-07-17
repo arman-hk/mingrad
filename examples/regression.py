@@ -22,14 +22,23 @@ model = Sequential(
     Linear(2, 2)
 )
 
-optimizer = SGD(model.parameters(), lr=0.01)
+optimizer = SGD(model.parameters(), lr=0.3)
 
 mae = MAE()
 
 # training loop
+losses = []
 for epoch in range(10):
     out = model(x)
     loss = mae(out, y)
     loss.backward()
     optimizer.step()
     print(f"Epoch {epoch+1}, Loss: {loss.data}")
+    losses.append(loss.data)
+
+# loss curve
+plt.plot(losses)
+plt.title('Loss Curve')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
