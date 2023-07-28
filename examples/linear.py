@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 from mingrad.engine import Value
-from mingrad.nn import Linear, Sequential, MAE, SGD
+from mingrad.nn import Linear, Sequential, MAE, Adam
 import matplotlib.pyplot as plt
 
 # data
@@ -18,7 +18,7 @@ x_train, y_train = Value(x_train), Value(y_train.reshape(-1, 1))
 model = Sequential(
     Linear(10, 1)
     )
-optimizer = SGD(model.parameters(), lr=0.9)
+optimizer = Adam(model.parameters(), lr=0.9)
 mae = MAE()
 
 # training loop
