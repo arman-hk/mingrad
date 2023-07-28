@@ -58,6 +58,28 @@ class SGD:
                 p.data -= self.lr * p.grad
                 p.grad = np.zeros_like(p.data) # clear grad to zeroes
 
+# inspired by pytorch
+class Adam:
+    def __init__(self, params, lr, betas=(0.9, 0.999), eps=1e-8):
+        self.params = params
+        self.lr = lr
+        self.betas = betas
+        self.eps = eps
+        self.m = [np.zeros_like(p.data) for p in params]
+        self.v = [np.zeros_like(p.data) for p in params]
+        self.t = 0
+
+    def step(self):
+        self.t += 1
+        for i, p in enumerate(self.params):
+            if p is not None:
+                self.m[i] = self.betas[0] * self.m[i] + (1 - self.betas[0]) * p.grad
+                self.v[i] = self.betas[1] * self.v[i] + (1 - self.betas[1]) * (p.grad ** 2) # uncentered variance
+                m_hat = self.m[i] / (1 - self.betas[0] ** self.t)
+                v_hat = self.v[i] / (1 - self.betas[1] ** self.t)
+                p.data -= self.lr * m_hat / (np.sqrt(v_hat) + self.eps)
+                p.grad = np.zeros_like(p.data) # clear grad to zeroes
+
 """ Container """
 
 class Sequential:
