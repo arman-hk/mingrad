@@ -8,6 +8,7 @@ mingrad is a lean, but mean autograd engine that extends [micrograd](https://git
 
 #### Examples
 [linear regression 👇🏻](/examples/linear.ipynb)
+
 ![](/figures/linear.png)
 
 ---
