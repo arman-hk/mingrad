@@ -165,6 +165,16 @@ class Value:
         # topo
         for child in self._prev:
             child.backward(child.grad)
+    
+    @property
+    def shape(self):
+        return self.data.shape
+
+    def argmax(self, axis):
+        return np.argmax(self.data, axis=axis)
+
+    def __getitem__(self, key):
+        return self.data[key]
 
     def __repr__(self):
         return f"Value(data={self.data}, grad={self.grad})"
