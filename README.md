@@ -7,7 +7,7 @@ mingrad is a lean, but mean autograd engine that extends [micrograd](https://git
 - switching from scalars to numpy: numpy supports vectorized operations, broadcasting, and in-place array operations. but, the most important aspect is that numpy uses a C backend.
 
 #### Examples
-[linear regression 👇🏻](/examples/linear.ipynb)
+- [linear neural net prediction](/examples/linear.ipynb) on [diabetes dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes) 👇🏻
 
 ![](/figures/linear.png)
 
