@@ -35,6 +35,10 @@ class Tanh:
     def __call__(self, x):
         return x.tanh()
 
+class Sigmoid:
+    def __call__(self, x):
+        return x.sigmoid()
+
 """ Loss Functions """
 
 class MAE:
@@ -44,6 +48,17 @@ class MAE:
 
     def backward(self, grad=None):
         return self.diff.sign().data / self.diff.size
+
+class BCELoss:
+    def __call__(self, input, target):
+        self.input = input
+        self.target = target
+        loss = -(target.data * np.log(input.data) + (1 - target.data) * np.log(1 - input.data)).mean()
+
+        def _grad_fn(grad):
+            return -(self.target.data / self.input.data - (1 - self.target.data) / (1 - self.input.data)) / self.input.data.size
+        
+        return Value(loss, (self.input, self.target), _grad_fn)
 
 """ Optimization Algorithms """
 
@@ -58,8 +73,8 @@ class SGD:
                 p.data -= self.lr * p.grad
                 p.grad = np.zeros_like(p.data) # clear grad to zeroes
 
-# inspired by pytorch
 class Adam:
+    # inspired by pytorch
     def __init__(self, params, lr, betas=(0.9, 0.999), eps=1e-8):
         self.params = params
         self.lr = lr
