@@ -49,16 +49,14 @@ class MAE:
     def backward(self, grad=None):
         return self.diff.sign().data / self.diff.size
 
-class BCELoss:
-    def __call__(self, input, target):
-        self.input = input
-        self.target = target
-        loss = -(target.data * np.log(input.data) + (1 - target.data) * np.log(1 - input.data)).mean()
+class MSE:
+    def __call__(self, pred, target):
+        self.diff = pred - target
+        return (self.diff ** 2).mean()
 
-        def _grad_fn(grad):
-            return -(self.target.data / self.input.data - (1 - self.target.data) / (1 - self.input.data)) / self.input.data.size
-        
-        return Value(loss, (self.input, self.target), _grad_fn)
+    def backward(self, grad=None):
+        grad = 1 if grad is None else grad
+        return (2 * self.diff * grad).data / self.diff.data.size
 
 """ Optimization Algorithms """
 
