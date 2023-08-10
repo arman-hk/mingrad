@@ -58,6 +58,18 @@ class MSE:
         grad = 1 if grad is None else grad
         return (2 * self.diff * grad).data / self.diff.data.size
 
+class BCE:
+    def __call__(self, pred, target):
+        self.pred = pred = pred.data
+        self.target = target = target.data
+        loss = -(np.mean((target * np.log(pred)) + ((1 - target) * np.log(1 - pred))))
+        return Value(loss)
+
+    def backward(self, grad=None):
+        grad = 1 if grad is None else grad
+        grad_loss = (self.pred - self.target) / (self.pred * (1 - self.pred) * self.pred.shape[0]) * grad
+        return grad_loss
+
 """ Optimization Algorithms """
 
 class SGD:
