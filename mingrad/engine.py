@@ -142,15 +142,6 @@ class Value:
             self.grad += (1 - (np.tanh(self.data))**2) * grad
         out = Value(np.tanh(self.data), (self, ), _grad_fn)
         return out
-
-    def sigmoid(self):
-        def S(x):
-            return 1/(1 + np.exp(-x))
-        
-        def _grad_fn(grad):
-            self.grad += (S(self.data) * (1 - S(self.data))) * grad
-        out = Value(S(self.data), (self,), _grad_fn)
-        return out
     
     def mean(self):
         def _grad_fn(grad):

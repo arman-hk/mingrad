@@ -37,7 +37,8 @@ class Tanh:
 
 class Sigmoid:
     def __call__(self, x):
-        return x.sigmoid()
+        S = 1 / (1 + np.exp(-x.data))
+        return Value(S)
 
 """ Loss Functions """
 
@@ -62,12 +63,12 @@ class BCE:
     def __call__(self, pred, target):
         self.pred = pred = pred.data
         self.target = target = target.data
-        loss = -(np.mean((target * np.log(pred)) + ((1 - target) * np.log(1 - pred))))
-        return Value(loss)
+        loss = -(self.target * np.log(self.pred + 1e-9) + (1 - self.target) * np.log(1 - self.pred + 1e-9))
+        return Value(np.mean(loss))
 
     def backward(self, grad=None):
         grad = 1 if grad is None else grad
-        grad_loss = (self.pred - self.target) / (self.pred * (1 - self.pred) * self.pred.shape[0]) * grad
+        grad_loss = grad * (-(self.target / (self.pred + 1e-9)) + ((1 - self.target) / (1 - self.pred + 1e-9))) / self.pred.shape[0]
         return grad_loss
 
 """ Optimization Algorithms """
