@@ -51,11 +51,14 @@ class Value:
 
         def _grad_fn(grad):
             self_data, other_data = ctx.saved_arrays.values()
-            self.grad += (other_data * self_data ** (other_data - 1)) * grad
-            if np.any(self_data > 0):
-                other.grad += np.sum((self.data ** other_data * np.log(self_data)) * grad)
-            else:
-                other.grad += 0
+            self_grad = (other_data * self_data ** (other_data - 1)) * grad
+            self.grad += self_grad
+            epsilon = 1e-10
+            safe_log_data = np.where(self_data > 0, self_data, epsilon)
+            grad_other = np.where(self_data > 0, self.data ** other_data * np.log(safe_log_data), 0)
+            other_grad_scalar = np.sum(grad_other * grad)
+            other.grad = other.grad + other_grad_scalar if other.grad is not None else other_grad_scalar
+
         out = Value(self.data ** other.data, (self, other), _grad_fn)
         return out
 
