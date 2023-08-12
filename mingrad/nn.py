@@ -37,8 +37,7 @@ class Tanh:
 
 class Sigmoid:
     def __call__(self, x):
-        S = 1 / (1 + np.exp(-x.data))
-        return Value(S)
+        return x.sigmoid()
 
 """ Loss Functions """
 

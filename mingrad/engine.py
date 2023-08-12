@@ -146,6 +146,13 @@ class Value:
         out = Value(np.tanh(self.data), (self, ), _grad_fn)
         return out
     
+    def sigmoid(self):
+        s = 1 / (1 + np.exp(-self.data))
+        def _grad_fn(grad):
+            self.grad += s * (1 - s) * grad
+        out = Value(s, (self, ), _grad_fn)
+        return out
+    
     def mean(self):
         def _grad_fn(grad):
             self.grad += grad / np.size(self.data)
