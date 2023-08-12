@@ -6,7 +6,7 @@ from mingrad.engine import Value
 class Linear:
     def __init__(self, input_dim, output_dim):
         # init weights and biases
-        self.weights = Value(np.random.randn(input_dim, output_dim) * 0.01)
+        self.weights = Value(np.random.randn(input_dim, output_dim) * np.sqrt(2. / input_dim)) #He
         self.bias = Value(np.zeros(output_dim))
 
     def __call__(self, x):
