@@ -140,6 +140,13 @@ class Value:
         out = Value(np.maximum(0, self.data), (self,), _grad_fn)
         return out
 
+    def elu(self, alpha=1.0):
+        def _grad_fn(grad):
+            pos = (self.data > 0)
+            self.grad += grad * (pos + (alpha * (1 - pos)))
+        out = Value(np.where(self.data > 0, self.data, alpha * (np.exp(self.data) - 1)), (self,), _grad_fn)
+        return out
+    
     def tanh(self):
         def _grad_fn(grad):
             self.grad += (1 - (np.tanh(self.data))**2) * grad
