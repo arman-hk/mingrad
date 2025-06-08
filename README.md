@@ -18,5 +18,4 @@
 
 ![](/figures/linear.png)
 
----
-This project is licensed under the terms of the [MIT License](/LICENSE).
+#### (⚠️ not active anymore, since this was more of a educational project for me.)
